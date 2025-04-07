@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather Widget</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to bottom, #87ceeb, #f0f8ff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .weather-widget {
+      background: #ffffff;
+      border-radius: 15px;
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+      padding: 20px 30px;
+      text-align: center;
+      width: 350px;
+    }
+
+    .weather-widget h1 {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    .weather-widget .temperature {
+      font-size: 3.5rem;
+      font-weight: bold;
+      color: #ff4500;
+      margin: 10px 0;
+    }
+
+    .weather-widget .condition {
+      font-size: 1.5rem;
+      color: #555;
+      margin-bottom: 20px;
+    }
+
+    .weather-widget .location {
+      font-size: 1.2rem;
+      color: #777;
+    }
+
+    .weather-widget .refresh {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      color: #fff;
+      background: #007bff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .weather-widget .refresh:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="weather-widget">
+    <h1>Current Weather</h1>
+    <p class="temperature" id="temperature">--°C</p>
+    <p class="condition" id="condition">Loading...</p>
+    <p class="location" id="location">Your Location</p>
+    <button class="refresh" onclick="fetchWeather()">Refresh</button>
+  </div>
+
+  <script>
+    async function fetchWeather() {
+      try {
+        // Example API call (replace with your API key and endpoint)
+        const response = await fetch('https://api.openweathermap.org/data/2.5/weather?q=jaipur&units=metric&appid=2992ed6018ba6464cd8e888b828246c0');
+        const data = await response.json();
+
+        // Update the widget with API data
+        document.getElementById('temperature').textContent = `${Math.round(data.main.temp)}°C`;
+        document.getElementById('condition').textContent = data.weather[0].description;
+        document.getElementById('location').textContent = data.name;
+      } catch (error) {
+        console.error('Error fetching weather data:', error);
+        document.getElementById('condition').textContent = 'Unable to fetch data';
+      }
+    }
+
+    // Fetch weather data on page load
+    fetchWeather();
+  </script>
+</body>
+</html>
+
